@@ -11,17 +11,17 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS_HOST:nacos.livepuls.com.cn}:${NACOS_PORT:8848}
+        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
         namespace: ${NACOS_NAMESPACE:cs}
         username: ${NACOS_USERNAME:nacos}
-        password: ${NACOS_PASSWORD:jdDDDnjjee&&LLM123V}
+        password: ${NACOS_PASSWORD:nacos}
         group: cs
         enabled: true
       config:
-        server-addr: ${NACOS_HOST:nacos.livepuls.com.cn}:${NACOS_PORT:8848}
+        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
         namespace: ${NACOS_NAMESPACE:cs}
         username: ${NACOS_USERNAME:nacos}
-        password: ${NACOS_PASSWORD:jdDDDnjjee&&LLM123V}
+        password: ${NACOS_PASSWORD:nacos}
         group: cs
         file-extension: properties
         extension-configs:
