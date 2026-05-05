@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  livepulse-connector-wechat-mp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: livepulse-connector-wechat-mp
+    ports:
+      - "23014:23014"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - NACOS_SERVER_ADDR=nacos-host:8848
+      - NACOS_NAMESPACE=
+      - NACOS_GROUP=DEFAULT_GROUP
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - livepulse-network
+
+networks:
+  livepulse-network:
+    external: true

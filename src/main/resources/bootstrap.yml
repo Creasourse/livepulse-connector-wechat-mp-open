@@ -1,0 +1,131 @@
+server:
+  port: 23014
+
+spring:
+  application:
+    name: wechat-mp-open-connector-server
+  config:
+    import:
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=cs
+      - optional:nacos:conn-client-base-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}?group=cs
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:nacos.livepuls.com.cn}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:cs}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:jdDDDnjjee&&LLM123V}
+        group: cs
+        enabled: true
+      config:
+        server-addr: ${NACOS_HOST:nacos.livepuls.com.cn}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:cs}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:jdDDDnjjee&&LLM123V}
+        group: cs
+        file-extension: properties
+        extension-configs:
+
+  profiles:
+    active: ${PROFILES_ACTIVE:dev}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+  health:
+    redis:
+      enabled: false
+
+logging:
+  config: classpath:logback-custom.xml
+  level:
+    org:
+      springframework:
+        security: info
+    com:
+      cs:
+        mapper: debug
+
+
+# 微信服务号连接器配置
+wechat:
+  mp:
+    # API 配置
+    api:
+      # API 版本
+      version: 2.0
+      # 请求超时时间（秒）
+      timeout: 30
+      # 连接超时时间（秒）
+      connect-timeout: 10
+      # API 基础 URL
+      base-url: https://api.weixin.qq.com
+
+    # 同步配置
+    sync:
+      # 批次大小
+      batch-size: 100
+      # 最大重试次数
+      max-retries: 3
+      # 重试延迟（毫秒）
+      retry-delay: 1000
+      # 每次查询的最大天数
+      max-query-days: 30
+
+    # 调度任务配置
+    scheduled:
+      # 是否启用调度任务
+      enabled: true
+
+      # 用户同步配置
+      user-sync:
+        enabled: true
+        # Cron表达式：每4小时执行一次
+        cron: "0 0 */4 * * ?"
+        # 初始延迟：60秒
+        initial-delay: 60
+        # 固定延迟：秒
+        fixed-delay: 14400
+
+      # 素材同步配置
+      material-sync:
+        enabled: true
+        # Cron表达式：每天凌晨2点执行
+        cron: "0 0 2 * * ?"
+        # 初始延迟：120秒
+        initial-delay: 120
+        # 固定延迟：秒
+        fixed-delay: 86400
+
+      # 消息同步配置
+      message-sync:
+        enabled: true
+        # Cron表达式：每6小时执行一次
+        cron: "0 0 */6 * * ?"
+        # 初始延迟：180秒
+        initial-delay: 180
+        # 固定延迟：秒
+        fixed-delay: 21600
+
+    # Webhook 配置
+    webhook:
+      # 是否启用签名验证
+      verify-signature: true
+      # Webhook 处理超时时间（秒）
+      timeout: 30
+      # 最大重试次数
+      max-retries: 3
+      # 重试延迟（毫秒）
+      retry-delay: 1000
